@@ -1,8 +1,8 @@
 # React State
 
-## Overview 
+## Overview
 
-In this lesson, we'll dive into component **state**. 
+In this lesson, we'll dive into component **state**.
 
 
 ## Objectives
@@ -20,9 +20,8 @@ during the component's life.
 
 Consider the limitations of props: for a component's props to change, its
 _parent_ component needs to send it new props (after which, the component would
-'remake' itself with the new props). State provides us with a method to update
-the information within a component _without_ requiring its parent to somehow
-send updated information. 
+'remake' itself with the new props). State provides us with a way to maintain and update information *within* a component _without_ requiring its parent to somehow
+send updated information.
 
 Imagine that we have a single component which displays an integer. When a user
 clicks the component, it should increment its integer by 1. If we were to
@@ -31,7 +30,7 @@ could increment itself without needing any fussy prop passing:
 
 ```js
 class MyComp extends React.Component {
-  
+
   // we use the constructor to set the INITIAL STATE
   constructor() {
     super()
@@ -47,7 +46,7 @@ class MyComp extends React.Component {
       count: newCount
     })
   }
-  
+
   render() {
     return (
       <div onClick={this.increment}>
@@ -58,15 +57,30 @@ class MyComp extends React.Component {
 }
 ```
 
+There's a lot going on above. Let's take some time to break things down. We set
+up the initial value of state in the `constructor()`. Remember from Object Oriented
+Javascript, the value of `this` above is an instance of our class `MyComp`. So
+`this.state = {count: 0}` is saying this instance of `MyComp` should have a
+property called `state` that has a value of `{count : 0}`. Also, we should call
+`super()` in the constructor since we are inheriting from another class via the
+`extends` keyword.
+
+Also, handling events in React work a bit differently than in vanilla JavaScript.
+We are going to dive deeper into React event handling later. For now, know that
+React events are written as attributes inside a JSX tag and are named using
+camelCase. Notice the `<div>` tag in the `render` method has an attribute
+`onClick` which set equal to the function object `this.increment`. In this example
+application, when the `div` is clicked, the function `this.increment` will be
+invoked, thereby updating the state using `this.setState()`.
+
 Take your time to read through the above code. Work through it line by line and
 make sure you are comfortable before moving forward.
 
 
 ## Initial State and 'setState()'
 
-In the example above, you will notice two new things that we haven't discussed
-yet: the setting of **initial state** in the constructor and the use of
-**this.setState()**. Let's explore both in turn: 
+Let's further explore both the setting of **initial state** in the constructor and the use of
+**this.setState()**:
 
 #### Initial State
 
@@ -89,7 +103,7 @@ it later using the method: `setState()`.
 `setState()` is straightforward in its purpose: it sets/updates state! That's
 it! That's what it's there for. While simple in that way, there is one very
 important caveat about _how_ it functions that we need to explore: it sets state
-_asynchronously_. 
+_asynchronously_.
 
 In order to understand why this is important, let's look at an example of
 `setState()` being used in a component. The following gif is of this component
@@ -97,7 +111,7 @@ In order to understand why this is important, let's look at an example of
 
 ```js
 class App extends Component {
-  
+
   constructor() {
     super()
     this.state = {
@@ -107,14 +121,14 @@ class App extends Component {
 
   increment = () => {
     console.log(`before setState: ${this.state.count}`)
-    
+
     this.setState({
       count: this.state.count + 1
     })
-    
+
     console.log(`after setState: ${this.state.count}`)
   }
-  
+
   render() {
     return (
       <div onClick={this.increment}>
@@ -147,12 +161,12 @@ While component state is a very powerful feature, it should be used as sparingly
 as possible. State adds (sometimes unnecessary) complexity and can be very easy
 to lose track of. The more state we introduce in our application, the harder it
 will be to keep track of all of the changes in our data. Remember: state is for
-values that are expected to change during the components life. 
+values that are expected to change during the components life.
 
 
 ## Conclusion
 
-- **state** is for values that are expected to change 
+- **state** is for values that are expected to change
 - we assign **initial state** in the constructor
 - we update state with `setState()`, which is a method provided by the `React.Component` class
 - `setState()` is _asynchronous_
