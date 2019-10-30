@@ -69,9 +69,12 @@ Also, handling events in React work a bit differently than in vanilla JavaScript
 We are going to dive deeper into React event handling later. For now, know that
 React events are written as attributes inside a JSX tag and are named using
 camelCase. Notice the `<div>` tag in the `render` method has an attribute
-`onClick` which is set equal to the function object `this.increment`. In this example
-application, when the `div` is clicked, the function `this.increment` will be
-invoked, thereby updating the state using `this.setState()`.
+`onClick` which is set equal to the function object `this.increment`. What this code
+does is:
+
+1. When the `div` is clicked,
+2. the function `this.increment` will be invoked,
+3. thereby updating the state using `this.setState()`.
 
 Take your time to read through the above code. Work through it line by line and
 make sure you are comfortable before moving forward.
