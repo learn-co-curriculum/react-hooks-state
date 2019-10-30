@@ -74,7 +74,12 @@ does is:
 
 1. When the `div` is clicked,
 2. the function `this.increment` will be invoked,
-3. thereby updating the state using `this.setState()`.
+3. thereby updating the state of `MyComp` using `this.setState()`.
+
+Note: You may have noticed that `increment` is written as an instance method and 
+as an arrow function. We write it as an **arrow function** to bind the value of `this` 
+to be our instance of `MyComp`. Then, when we say `this.setState()`, we are really 
+just saying to set the state of `MyComp`. 
 
 Take your time to read through the above code. Work through it line by line and
 make sure you are comfortable before moving forward.
