@@ -30,7 +30,7 @@ could increment itself without needing any fussy prop passing:
 
 ```js
 class MyComp extends React.Component {
-
+ 
   // we use the constructor to set the INITIAL STATE
   constructor() {
     super()
