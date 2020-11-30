@@ -32,12 +32,12 @@ could increment itself without needing any fussy prop passing:
 // useState is a special HOOK from React that lets us use state in a function component
 import React, { useState } from 'react'
 
-function MyComp() {
+function App() {
   // set up our initial state, and get the getter/setter for that piece of state
   const [count, setCount] = useState(0)
 
-  // the increment callback uses the setter function for the piece of state we're updating
-  const increment = () => {
+  // the increment function uses the setter function for the piece of state we're updating
+  function increment() {
     setCount(count + 1)
   }
 
@@ -56,14 +56,31 @@ We imported a special function from React called `useState`. This special functi
 is a **React Hook** that will let us "hook into" React's internal state inside of 
 our function component. 
 
-When we call `useState(0)` inside the function component, that creates a new piece 
-of internal state which our function gets access to. That new piece of state has 
-an initial value of 0 (or whatever we pass into `useState` when we call it). `useState` 
-will return an array that has two things inside of it: a variable that tells use the current
-value for that piece of state, and a _setter_ function so we can update that piece of state.
-We can use [array destructuring][array destructuring MDN] to save the two elements from that
-array to separate variables: `count` and `setCount`. We can then use the `count` variable 
-to access that piece of state, and the `setCount` function to update its value.
+When we call `useState(0)` inside the function component, that creates a new
+"state variable" which our function gets access to. That new state variable has
+an initial value of 0 (or whatever we pass into `useState` when we call it).
+
+`useState` will return an array that has two things inside of it: a variable
+that tells use the current value for that piece of state, and a _setter_
+function so we can update that piece of state. It looks something like this:
+
+```js
+const countState = useState(0)
+// => [0, setStateFunction]
+const count = countState[0]
+const setCount = countState[1]
+```
+
+To clean up the code, we can use [array destructuring][array destructuring MDN]
+to save the two elements from that array to separate variables: `count` and
+`setCount`:
+
+```js
+const [count, setCount] = useState(0)
+```
+
+We can then use the `count` variable to access that piece of state, and the
+`setCount` function to update its value.
 
 Also, handling events in React work a bit differently than in vanilla JavaScript.
 We are going to dive deeper into React event handling later. For now, know that
@@ -95,11 +112,11 @@ function App() {
   const [count, setCount] = useState(0)
 
   const increment = () => {
-    console.log(`before setCount: ${count}`)
+    console.log(`before setState: ${count}`)
     
     setCount(count + 1)
     
-    console.log(`after setCount: ${count}`)
+    console.log(`after setState: ${count}`)
   }
 
   return (
@@ -122,8 +139,8 @@ updating the state. In this case, it finishes executing the `increment` function
 in full before updating the state.
 
 It's not uncommon for new React developers to get 'bitten' by the asynchronous
-nature of state setter functions at least once. If setting state were not _asynchronous_,
-the two logs would not be the same number.
+nature of state setter functions at least once. If setting state were not
+_asynchronous_, the two logs would not be the same number.
 
 
 ## A Word of Caution
@@ -138,13 +155,15 @@ values that are expected to change during the components life.
 ## Conclusion
 
 - **state** is for values that are expected to change
-- we create our initial state by calling the `useState` hook inside of our function components
+- we create our initial state by calling the `useState` hook inside of our
+  function components
 - we update state with the setter function returned by useState
 - setting state is _asynchronous_
 
 ## Resources
 - [The useState hook](https://reactjs.org/docs/hooks-state.html)
 - [Props vs. state](https://github.com/uberVU/react-guide/blob/master/props-vs-state.md)
+- [Thinking in React](https://reactjs.org/docs/thinking-in-react.html#step-3-identify-the-minimal-but-complete-representation-of-ui-state)
 
 <p class='util--hide'>View <a href='https://learn.co/lessons/react-initial-state'>Initial State</a> on Learn.co and start learning to code for free.</p>
 
