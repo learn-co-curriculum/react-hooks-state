@@ -115,6 +115,10 @@ display the new `count` value) -- whenever we call the `setCount` function,
 React will automatically re-render our component, along with any of its child
 components, and update the DOM based on the new values for state!
 
+Using a setter function like this is very performant: based on which component
+is updated, React can determine which child components are affected and how the
+DOM needs to be changed when these components are re-rendered.
+
 Take your time to read through the above code. Work through it line by line and
 make sure you are comfortable before moving forward.
 
@@ -195,8 +199,19 @@ function increment() {
 ```
 
 Even though we call `setCount` multiple times, the value of `count` isn't
-updated immediately! This comes back to the fact that updating state is
-_asynchronous_. To fix this, we can use a the _callback_ version of `setState`:
+updated immediately!
+
+As mentioned before, `setState` is not synchronous &mdash; in situations where
+there are many state changes being made, multiple `setState` calls may be
+grouped together into one update. If we use the previous `state` inside a `setState`, it
+is possible that the values in state are changed by a _different_ `setState`
+just prior to our `setState`.
+
+React actually provides a built in solution for this problem. Instead of passing a new value
+into `setState`, we can also pass a callback function. That function, when called inside `setState`
+will be passed the component state from when that `setState` was called. This is typically
+referred to as the _previous state_. With this knowledge, we can rewrite the `increment`
+function to:
 
 ```js
 function increment() {
