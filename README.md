@@ -2,15 +2,14 @@
 
 ## Overview
 
-In this lesson, we'll dive into component **state**.
-
+In this lesson, we'll dive into component **state**, and see how we can make our
+components respond to change dynamically by working with the React state system.
 
 ## Objectives
 
 1. Explain what state is
 2. Explain the difference between state and props
 3. Show examples of how state is defined and updated
-
 
 ## What's state?
 
@@ -20,110 +19,128 @@ during the component's life.
 
 Consider the limitations of props: for a component's props to change, its
 _parent_ component needs to send it new props (after which, the component would
-'remake' itself with the new props). State provides us with a way to maintain and update information *within* a component _without_ requiring its parent to somehow
-send updated information.
+'remake' itself with the new props). State provides us with a way to maintain
+and update information _within_ a component _without_ requiring its parent to
+somehow send updated information.
 
 Imagine that we have a single component which displays an integer. When a user
 clicks the component, it should increment its integer by 1. If we were to
 represent this integer value in the component using **state**, the component
-could increment itself without needing any fussy prop passing:
+could increment its own state and automatically re-render whenever state is
+updated!
+
+## useState
+
+In order to work with these special **state** variables in our components, we
+must first import a function from React called `useState`. This special function
+is a **React Hook** that will let us "hook into" React's internal state inside
+of our function component.
 
 ```js
-// useState is a special HOOK from React that lets us use state in a function component
-import React, { useState } from 'react'
+import React, { useState } from "react";
+```
 
-function App() {
-  // set up our initial state, and get the getter/setter for that piece of state
-  const [count, setCount] = useState(0)
+### Initializing State
 
-  // the increment function uses the setter function for the piece of state we're updating
-  function increment() {
-    setCount(count + 1)
-  }
+Once we've imported the `useState` hook, we can call it inside of our component,
+like so:
 
-  // we can use the count variable to display the current value for this piece of state in our JSX
-  return (
-    <div onClick={increment}>
-      {count}
-    </div>
-  )
+```js
+import React, { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return <button>{count}</button>;
 }
 ```
 
-There's a lot going on above. Let's take some time to break things down. 
-
-We imported a special function from React called `useState`. This special function 
-is a **React Hook** that will let us "hook into" React's internal state inside of 
-our function component. 
-
 When we call `useState(0)` inside the function component, that creates a new
 "state variable" which our function gets access to. That new state variable has
-an initial value of 0 (or whatever we pass into `useState` when we call it).
+an **initial value** of 0 (or whatever we pass into `useState` when we call it).
 
-`useState` will return an array that has two things inside of it: a variable
-that tells use the current value for that piece of state, and a _setter_
-function so we can update that piece of state. It looks something like this:
+`useState` will return an **array** that has two things inside of it:
+
+- `count`: the current value for state
+- `setCount`: a _setter_ function so we can update that piece of state
+
+We could access those elements from the array individually, like this:
 
 ```js
-const countState = useState(0)
+const countState = useState(0);
 // => [0, setStateFunction]
-const count = countState[0]
-const setCount = countState[1]
+const count = countState[0];
+const setCount = countState[1];
 ```
 
-To clean up the code, we can use [array destructuring][array destructuring MDN]
-to save the two elements from that array to separate variables: `count` and
-`setCount`:
+But to clean up the code, React recommends using
+[array destructuring][destructuring] to achieve the same result in one line of
+code instead of three:
 
 ```js
-const [count, setCount] = useState(0)
+const [count, setCount] = useState(0);
 ```
 
-We can then use the `count` variable to access that piece of state, and the
-`setCount` function to update its value.
+We can then use the `count` variable to access that piece of state and display
+its current value in the `<button>` element.
 
-Also, handling events in React work a bit differently than in vanilla JavaScript.
-We are going to dive deeper into React event handling later. For now, know that
-React events are written as attributes inside a JSX tag and are named using
-camelCase. Notice the `<div>` tag has an attribute `onClick` which is set equal to 
-our `increment` function. What this code does is:
+## Setting State
 
-1. When the `div` is clicked,
-2. the function `increment` will be invoked,
-3. thereby updating the state of `MyComp` using `setCount()`.
+The setter function we get back from calling `useState` is straightforward in
+its purpose: it sets/updates state! That's it! That's what it's there for.
+Whenever we want to update state, we can just call the setter function (in our
+case, `setCount`):
+
+```js
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  function increment() {
+    setCount(count + 1);
+  }
+
+  return <button onClick={increment}>{count}</button>;
+}
+```
+
+Now, when the `<button>` element is clicked, it will run our `increment`
+function. `increment` calls the `setCount` function to do these two things:
+
+- Update the value of `count` to be `count + 1`
+- Re-render our component
+
+The magic of working with **state** is that we don't have to worry about any
+complex DOM manipulation (like finding the button element and telling it to
+display the new `count` value) -- whenever we call the `setCount` function,
+React will automatically re-render our component, along with any of its child
+components, and update the DOM based on the new values for state!
 
 Take your time to read through the above code. Work through it line by line and
 make sure you are comfortable before moving forward.
 
+### Setting State is Asynchronous
 
-## Setting state
-
-The setter function we get back from calling `useState` is straightforward in its purpose: 
-it sets/updates state! That's it! That's what it's there for. While simple in that way, 
-there is one very important caveat about _how_ it functions that we need to explore: it sets state
+While using the `setCount` function is straightforward enough, there is one very
+important caveat about _how_ it functions that we need to explore: it sets state
 _asynchronously_.
 
-In order to understand why this is important, let's look at an example of
-a state setter function being used in a component. The following gif is of this component
-(pay close attention to the `console.log()`s:
+In order to understand why this is important, let's look at an example of a
+state setter function being used in a component. The following gif is of this
+component (pay close attention to the `console.log()`s:
 
 ```js
-function App() {
-  const [count, setCount] = useState(0)
+function Counter() {
+  const [count, setCount] = useState(0);
 
-  const increment = () => {
-    console.log(`before setState: ${count}`)
-    
-    setCount(count + 1)
-    
-    console.log(`after setState: ${count}`)
+  function increment() {
+    console.log(`before setState: ${count}`);
+
+    setCount(count + 1);
+
+    console.log(`after setState: ${count}`);
   }
 
-  return (
-    <div onClick={increment}>
-      {count}
-    </div>
-  )
+  return <div onClick={increment}>{count}</div>;
 }
 ```
 
@@ -142,30 +159,85 @@ It's not uncommon for new React developers to get 'bitten' by the asynchronous
 nature of state setter functions at least once. If setting state were not
 _asynchronous_, the two logs would not be the same number.
 
+For this reason, React recommends using a slightly different syntax for setting
+state when working with values that are calculated based on the previous version
+of state (like our counter). To demonstrate the issue, consider the following:
+
+```js
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  function increment() {
+    // call setCount twice, to update the counter by two every time we click
+    setCount(count + 1);
+    setCount(count + 1);
+  }
+
+  return <div onClick={increment}>{count}</div>;
+}
+```
+
+This is a contrived example -- we could just as easily have called
+`setCount(count + 2)` instead of calling `setCount` twice. But if you run this
+example in your browser, you may be surprised at the result. Instead of seeing
+the counter incremented by two, it's still only incremented by 1!
+
+This problem makes more sense if we add some logs back in:
+
+```js
+function increment() {
+  console.log(`before setState: ${count}`);
+  setCount(count + 1);
+  console.log(`after setState once: ${count}`);
+  setCount(count + 1);
+  console.log(`after setState twice: ${count}`);
+}
+```
+
+Even though we call `setCount` multiple times, the value of `count` isn't
+updated immediately! This comes back to the fact that updating state is
+_asynchronous_. To fix this, we can use a the _callback_ version of `setState`:
+
+```js
+function increment() {
+  setCount((currentCount) => currentCount + 1);
+  setCount((currentCount) => currentCount + 1);
+}
+```
+
+When using the callback version of `setCount`, React will pass in the current
+value of `count` before updating it. Now our code works as intended and updates
+`count` by 2 when the button is clicked.
+
+As a rule of thumb, **any time you need to set state based on the current value
+of state, you should use the callback syntax**.
 
 ## A Word of Caution
 
 While component state is a very powerful feature, it should be used as sparingly
 as possible. State adds (sometimes unnecessary) complexity and can be very easy
 to lose track of. The more state we introduce in our application, the harder it
-will be to keep track of all of the changes in our data. Remember: state is for
-values that are expected to change during the components life.
-
+will be to keep track of all of the changes in our data. Remember: **state is
+only for values that are expected to change during the components life**.
 
 ## Conclusion
 
-- **state** is for values that are expected to change
-- we create our initial state by calling the `useState` hook inside of our
-  function components
-- we update state with the setter function returned by useState
-- setting state is _asynchronous_
+Whenever we need _dynamic_ data in our applications (values that change over
+time), we should use **state**. We create our initial state by calling the
+`useState` hook inside of our components.
+
+To update state, we must use the `setState` function returned by `useState`, so
+that changes to state cause our components to re-render.
+
+Also, setting state is _asynchronous_, so any updates to state that are based on
+the current value of state should be made using the callback syntax.
 
 ## Resources
+
 - [The useState hook](https://reactjs.org/docs/hooks-state.html)
-- [Props vs. state](https://github.com/uberVU/react-guide/blob/master/props-vs-state.md)
+- [Props vs. State](https://github.com/uberVU/react-guide/blob/master/props-vs-state.md)
 - [Thinking in React](https://reactjs.org/docs/thinking-in-react.html#step-3-identify-the-minimal-but-complete-representation-of-ui-state)
 
 <p class='util--hide'>View <a href='https://learn.co/lessons/react-initial-state'>Initial State</a> on Learn.co and start learning to code for free.</p>
 
-
-[array destructuring MDN]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
+[destructuring]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
