@@ -13,15 +13,15 @@ components respond to change dynamically by working with the React state system.
 
 ## What's state?
 
-Let's quickly talk about what _state_ is in React. State is data that is mutated
-in your component. A component's state, unlike a component's props, _can_ change
-during the component's life.
+Let's quickly talk about what **state** is in React. State is data that is
+**dynamic** in your component. A component's state, unlike a component's props,
+_can_ change during the component's life.
 
 Consider the limitations of props: for a component's props to change, its
-_parent_ component needs to send it new props (after which, the component would
-'remake' itself with the new props). State provides us with a way to maintain
-and update information _within_ a component _without_ requiring its parent to
-somehow send updated information.
+**parent** component needs to send it new props (after which, the component
+would 'remake' itself with the new props). State provides us with a way to
+maintain and update information _within_ a component _without_ requiring its
+parent to somehow send updated information.
 
 Imagine that we have a single component which displays an integer. When a user
 clicks the component, it should increment its integer by 1. If we were to
@@ -31,7 +31,7 @@ updated!
 
 ## useState
 
-In order to work with these special **state** variables in our components, we
+In order to work with these special **state variables** in our components, we
 must first import a function from React called `useState`. This special function
 is a **React Hook** that will let us "hook into" React's internal state inside
 of our function component.
@@ -61,8 +61,8 @@ an **initial value** of 0 (or whatever we pass into `useState` when we call it).
 
 `useState` will return an **array** that has two things inside of it:
 
-- `count`: the current value for state
-- `setCount`: a _setter_ function so we can update that piece of state
+- `count`: the current value for the state variable
+- `setCount`: a _setter_ function so we can update the state variable
 
 We could access those elements from the array individually, like this:
 
@@ -111,13 +111,13 @@ function. `increment` calls the `setCount` function to do these two things:
 
 The magic of working with **state** is that we don't have to worry about any
 complex DOM manipulation (like finding the button element and telling it to
-display the new `count` value) -- whenever we call the `setCount` function,
+display the new `count` value) &mdash; whenever we call the `setCount` function,
 React will automatically re-render our component, along with any of its child
 components, and update the DOM based on the new values for state!
 
-Using a setter function like this is very performant: based on which component
-is updated, React can determine which child components are affected and how the
-DOM needs to be changed when these components are re-rendered.
+Using state like this allows React to be very performant: based on which
+component is updated, React can determine which child components are affected
+and how the DOM needs to be changed when these components are re-rendered.
 
 Take your time to read through the above code. Work through it line by line and
 make sure you are comfortable before moving forward.
@@ -126,7 +126,7 @@ make sure you are comfortable before moving forward.
 
 While using the `setCount` function is straightforward enough, there is one very
 important caveat about _how_ it functions that we need to explore: it sets state
-_asynchronously_.
+**asynchronously**.
 
 In order to understand why this is important, let's look at an example of a
 state setter function being used in a component. The following gif is of this
@@ -152,8 +152,8 @@ function Counter() {
   <img src="https://curriculum-content.s3.amazonaws.com/react/asynchronous-state-setting-example.gif"/>
 </p>
 
-What we are seeing is `setCount()` functioning _asynchronously_. When we execute
-`setCount()`, it is _non-blocking_. It fires off a message to the React
+What we are seeing is `setCount()` functioning **asynchronously**. When we
+execute `setCount()`, it is _non-blocking_. It fires off a message to the React
 component's inner workings saying: "Hey, you need to update state to this value
 when you have a chance." The component finishes doing its current task _before_
 updating the state. In this case, it finishes executing the `increment` function
@@ -181,7 +181,7 @@ function Counter() {
 }
 ```
 
-This is a contrived example -- we could just as easily have called
+This is a contrived example &mdash; we could just as easily have called
 `setCount(count + 2)` instead of calling `setCount` twice. But if you run this
 example in your browser, you may be surprised at the result. Instead of seeing
 the counter incremented by two, it's still only incremented by 1!
@@ -201,17 +201,33 @@ function increment() {
 Even though we call `setCount` multiple times, the value of `count` isn't
 updated immediately!
 
-As mentioned before, `setState` is not synchronous &mdash; in situations where
-there are many state changes being made, multiple `setState` calls may be
-grouped together into one update. If we use the previous `state` inside a `setState`, it
-is possible that the values in state are changed by a _different_ `setState`
-just prior to our `setState`.
+As mentioned before, setting state is not synchronous. In our example, calling
+`setCount(count + 1)` will evaluate to `setCount(1)` in _both_ cases:
 
-React actually provides a built in solution for this problem. Instead of passing a new value
-into `setState`, we can also pass a callback function. That function, when called inside `setState`
-will be passed the component state from when that `setState` was called. This is typically
-referred to as the _previous state_. With this knowledge, we can rewrite the `increment`
-function to:
+```js
+function increment() {
+  console.log(count);
+  // => 0
+
+  setCount(count + 1);
+  // equivalent to setCount(0 + 1)
+
+  console.log(count);
+  // => 0
+
+  setCount(0 + 1);
+  // equivalent to setCount(0 + 1)
+
+  console.log(count);
+  // => 0
+}
+```
+
+React actually provides a built in solution for this problem. Instead of passing
+a new value into `setCount`, we can also pass a callback function. That
+function, when called inside `setCount` will be passed the state variable from
+when that `setCount` was called. This is typically referred to as the _previous
+state_. With this knowledge, we can rewrite the `increment` function to:
 
 ```js
 function increment() {
@@ -253,6 +269,6 @@ the current value of state should be made using the callback syntax.
 - [Props vs. State](https://github.com/uberVU/react-guide/blob/master/props-vs-state.md)
 - [Thinking in React](https://reactjs.org/docs/thinking-in-react.html#step-3-identify-the-minimal-but-complete-representation-of-ui-state)
 
-<p class='util--hide'>View <a href='https://learn.co/lessons/react-initial-state'>Initial State</a> on Learn.co and start learning to code for free.</p>
+<p class='util&mdash;hide'>View <a href='https://learn.co/lessons/react-initial-state'>Initial State</a> on Learn.co and start learning to code for free.</p>
 
 [destructuring]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
