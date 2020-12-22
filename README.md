@@ -269,6 +269,4 @@ the current value of state should be made using the callback syntax.
 - [Props vs. State](https://github.com/uberVU/react-guide/blob/master/props-vs-state.md)
 - [Thinking in React](https://reactjs.org/docs/thinking-in-react.html#step-3-identify-the-minimal-but-complete-representation-of-ui-state)
 
-<p class='util&mdash;hide'>View <a href='https://learn.co/lessons/react-initial-state'>Initial State</a> on Learn.co and start learning to code for free.</p>
-
 [destructuring]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
