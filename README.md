@@ -148,9 +148,7 @@ function Counter() {
 }
 ```
 
-<p align="center">
-  <img src="https://curriculum-content.s3.amazonaws.com/react/asynchronous-state-setting-example.gif"/>
-</p>
+![async set state example](https://curriculum-content.s3.amazonaws.com/react/asynchronous-state-setting-example.gif)
 
 What we are seeing is `setCount()` functioning **asynchronously**. When we
 execute `setCount()`, it is _non-blocking_. It fires off a message to the React
@@ -243,6 +241,46 @@ value of `count` before updating it. Now our code works as intended and updates
 As a rule of thumb, **any time you need to set state based on the current value
 of state, you should use the callback syntax**.
 
+### Rules of Hooks
+
+Since the `useState` hook is the first of several React Hooks we'll be learning
+about, now's a good time to review some general
+[rules for working with hooks][rules of hooks]:
+
+#### Only Call Hooks at the Top Level
+
+> Don’t call Hooks inside loops, conditions, or nested functions.
+
+When you're using a React Hook, such as `useState`, it's important that the hook
+is always called every time your component is rendered. That means this syntax
+isn't valid:
+
+```js
+function Counter(props) {
+  if (props.shouldHaveCount) {
+    // This is wrong -- never call a hook inside a condition
+    const [count, setCount] = useState(0);
+
+    // return ...
+  }
+  // return ...
+}
+```
+
+The reason for this comes down to how React keeps track of which state variables
+are associated with &mdash; hooks must always be called in the same order. For a
+more detailed explanation, check out the
+[React docs][rules of hooks explanation].
+
+#### Only Call Hooks from React Functions
+
+> Don’t call Hooks from regular JavaScript functions.
+
+React Hooks are meant to work specifically with React components, so make sure
+to only use Hooks inside of React components. We'll see how to create our custom
+hooks later on &mdash; custom hooks and React components are the only two places
+you can use React hooks.
+
 ## A Word of Caution
 
 While component state is a very powerful feature, it should be used as sparingly
@@ -268,5 +306,8 @@ the current value of state should be made using the callback syntax.
 - [The useState hook](https://reactjs.org/docs/hooks-state.html)
 - [Props vs. State](https://github.com/uberVU/react-guide/blob/master/props-vs-state.md)
 - [Thinking in React](https://reactjs.org/docs/thinking-in-react.html#step-3-identify-the-minimal-but-complete-representation-of-ui-state)
+- [Rules of Hooks][rules of hooks]
 
 [destructuring]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
+[rules of hooks]: https://reactjs.org/docs/hooks-rules.html
+[rules of hooks explanation]: https://reactjs.org/docs/hooks-rules.html#explanation
