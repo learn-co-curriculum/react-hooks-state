@@ -124,7 +124,7 @@ function. `increment` calls the `setCount` function to do these two things:
 
 The magic of working with **state** is that we don't have to worry about any
 complex DOM manipulation (like finding the button element and telling it to
-display the new `count` value) &mdash; whenever we call the `setCount` function,
+display the new `count` value) — whenever we call the `setCount` function,
 React will automatically **re-render** our component, along with any of its
 child components, and update the DOM based on the new values for state!
 
@@ -209,7 +209,7 @@ function Counter() {
 }
 ```
 
-This is a contrived example &mdash; we could just as easily have called
+This is a contrived example — we could just as easily have called
 `setCount(count + 2)` instead of calling `setCount` twice. But if you run this
 example in your browser, you may be surprised at the result. Instead of seeing
 the counter incremented by two, it's still only incremented by 1!
@@ -298,7 +298,7 @@ function Counter(props) {
 ```
 
 The reason for this comes down to how React keeps track of which state variables
-are associated with &mdash; hooks must always be called in the same order. For a
+are associated with — hooks must always be called in the same order. For a
 more detailed explanation, check out the
 [React docs][rules of hooks explanation].
 
@@ -308,7 +308,7 @@ more detailed explanation, check out the
 
 React Hooks are meant to work specifically with React components, so make sure
 to only use Hooks inside of React components. We'll see how to create our custom
-hooks later on &mdash; custom hooks and React components are the only two places
+hooks later on — custom hooks and React components are the only two places
 you can use React hooks.
 
 ## A Word of Caution
