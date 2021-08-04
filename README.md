@@ -44,7 +44,7 @@ To do this, we must first import a function from React called `useState`. This
 special function is a **React Hook** that will let us "hook into" React's
 internal state inside of our function component.
 
-```js
+```jsx
 import React, { useState } from "react";
 ```
 
@@ -53,7 +53,7 @@ import React, { useState } from "react";
 Once we've imported the `useState` hook, we can call it inside of our component,
 like so:
 
-```js
+```jsx
 import React, { useState } from "react";
 
 function Counter() {
@@ -74,7 +74,7 @@ telling React to create some new internal state with for our component with an
 
 We could access those elements from the array individually, like this:
 
-```js
+```jsx
 const countState = useState(0);
 // => [0, setStateFunction]
 const count = countState[0];
@@ -85,14 +85,14 @@ But to clean up the code, React recommends using
 [array destructuring][destructuring] to achieve the same result in one line of
 code instead of three:
 
-```js
+```jsx
 const [count, setCount] = useState(0);
 ```
 
 We can then use the `count` variable to display its current value in the
 `<button>` element:
 
-```js
+```jsx
 <button>{count}</button>
 // => <button>0</button>
 ```
@@ -104,7 +104,7 @@ its purpose: it sets/updates state! That's it! That's what it's there for.
 Whenever we want to update state, we can just call the setter function (in our
 case, `setCount`):
 
-```js
+```jsx
 function Counter() {
   const [count, setCount] = useState(0);
 
@@ -158,7 +158,7 @@ In order to understand why this is important, let's look at an example of a
 state setter function being used in a component. The following gif is of this
 component (pay close attention to the `console.log()`s:
 
-```js
+```jsx
 function Counter() {
   const [count, setCount] = useState(0);
 
@@ -195,7 +195,7 @@ For this reason, React recommends using a slightly different syntax for setting
 state when working with values that are calculated based on the previous version
 of state (like our counter). To demonstrate the issue, consider the following:
 
-```js
+```jsx
 function Counter() {
   const [count, setCount] = useState(0);
 
@@ -216,7 +216,7 @@ the counter incremented by two, it's still only incremented by 1!
 
 This problem makes more sense if we add some logs back in:
 
-```js
+```jsx
 function increment() {
   console.log(`before setState: ${count}`);
   setCount(count + 1);
@@ -232,7 +232,7 @@ updated immediately!
 As mentioned before, setting state is not synchronous. In our example, calling
 `setCount(count + 1)` will evaluate to `setCount(1)` in _both_ cases:
 
-```js
+```jsx
 function increment() {
   console.log(count);
   // => 0
@@ -257,7 +257,7 @@ function, when called inside `setCount` will be passed the state variable from
 when that `setCount` was called. This is typically referred to as the _previous
 state_. With this knowledge, we can rewrite the `increment` function to:
 
-```js
+```jsx
 function increment() {
   setCount((currentCount) => currentCount + 1);
   setCount((currentCount) => currentCount + 1);
@@ -285,7 +285,7 @@ When you're using a React Hook, such as `useState`, it's important that the hook
 is always called every time your component is rendered. That means this syntax
 isn't valid:
 
-```js
+```jsx
 function Counter(props) {
   if (props.shouldHaveCount) {
     // This is wrong -- never call a hook inside a condition
