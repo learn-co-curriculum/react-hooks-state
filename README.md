@@ -12,11 +12,19 @@
 In this lesson, we'll dive into component **state**, and see how we can make our
 components respond to change dynamically by working with the React state system.
 
+Working with state is one of the most crucial elements of creating dynamic React
+applications, so make sure to pay extra attention to this lesson! If you'd like
+to explore state in more depth, the [new React docs][react docs beta] have a
+great section on learning about state with example code to explore.
+
+You can fork and clone this lesson's repository if you'd like to see a working
+version of a component that uses state and explore the code.
+
 ## What's state?
 
 Let's quickly talk about what **state** is in React. State is data that is
-**dynamic** in your component: it changes over time as users interact with
-your application.
+**dynamic** in your component: it changes over time as users interact with your
+application.
 
 A component's state, unlike a component's props, _can_ change during the
 component's life.
@@ -72,7 +80,7 @@ create some new internal state for our component with an **initial value** of 0
 - `count`: a reference to the current value of that state in React's internals
 - `setCount`: a _setter_ function so we can update that state
 
-We *could* create the variables and set their values by accessing the elements
+We _could_ create the variables and set their values by accessing the elements
 from the array individually, like this:
 
 ```jsx
@@ -82,9 +90,9 @@ const count = countState[0];
 const setCount = countState[1];
 ```
 
-But to clean up the code, React recommends using
-[array destructuring][destructuring] to achieve the same result in one line of
-code instead of three:
+But to clean up the code, React recommends using [array
+destructuring][destructuring] to achieve the same result in one line of code
+instead of three:
 
 ```jsx
 const [count, setCount] = useState(0);
@@ -125,9 +133,9 @@ function. `increment` calls the `setCount` function to do these two things:
 
 The magic of working with **state** is that we don't have to worry about any
 complex DOM manipulation (like finding the button element and telling it to
-display the new `count` value) — whenever we call the `setCount` function,
-React will automatically **re-render** our component, along with any of its
-child components, and update the DOM based on the new values for state!
+display the new `count` value) — whenever we call the `setCount` function, React
+will automatically **re-render** our component, along with any of its child
+components, and update the DOM based on the new values for state!
 
 You can visualize the steps that happen when we call `setCount` like this:
 
@@ -137,7 +145,7 @@ You can visualize the steps that happen when we call `setCount` like this:
 3. React **re-renders** the `Counter` component
 4. When the `Counter` component is re-rendered, `useState` will return the
    current value of React's internal state, which is now 1
-5. The value of `count` is now 1 within our Counter component
+5. The value of `count` is now 1 within our `Counter` component
 6. Our component's JSX uses this new value to display the number 1 within the
    button
 
@@ -262,16 +270,16 @@ of state, you should use the callback syntax**.
 ### Rules of Hooks
 
 Since the `useState` hook is the first of several React Hooks we'll be learning
-about, now's a good time to review some general
-[rules for working with hooks][rules of hooks]:
+about, now's a good time to review some general [rules for working with
+hooks][rules of hooks]:
 
 #### Only Call Hooks at the Top Level
 
 > Don’t call Hooks inside loops, conditions, or nested functions.
 
 When you're using a React Hook such as `useState`, it's important that the hook
-is called every time your component is rendered. That means this syntax
-isn't valid:
+is called every time your component is rendered. That means this syntax isn't
+valid:
 
 ```jsx
 function Counter(props) {
@@ -287,7 +295,8 @@ function Counter(props) {
 
 The reason for this comes down to how React keeps track of which piece of state
 each variable is associated with — hooks must always be called in the same
-order. For a more detailed explanation, check out the [React docs][rules of hooks explanation].
+order. For a more detailed explanation, check out the [React
+docs][rules of hooks explanation].
 
 #### Only Call Hooks from React Functions
 
@@ -301,10 +310,11 @@ can use React hooks.
 ## A Word of Caution
 
 While component state is a very powerful feature, it should be used as sparingly
-as possible. State adds complexity (sometimes unnecessarily) and can be very easy
-to lose track of. The more state we introduce in our application, the harder it
-will be to keep track of all of the changes in our data. Remember: **state is
-only for values that are expected to change during the component's life**.
+as possible. State adds complexity (sometimes unnecessarily) and can be very
+easy to lose track of. The more state we introduce in our application, the
+harder it will be to keep track of all of the changes in our data. Remember:
+**state is only for values that are expected to change during the component's
+life**.
 
 ## Conclusion
 
@@ -321,11 +331,15 @@ callback syntax.
 
 ## Resources
 
-- [The useState hook](https://reactjs.org/docs/hooks-state.html)
+- [React Docs (beta): Managing State][react docs beta]
+- [React Docs: The useState hook](https://reactjs.org/docs/hooks-state.html)
 - [Props vs. State](https://github.com/uberVU/react-guide/blob/master/props-vs-state.md)
-- [Thinking in React](https://reactjs.org/docs/thinking-in-react.html#step-3-identify-the-minimal-but-complete-representation-of-ui-state)
-- [Rules of Hooks][rules of hooks]
+- [React Docs: Thinking in React](https://reactjs.org/docs/thinking-in-react.html#step-3-identify-the-minimal-but-complete-representation-of-ui-state)
+- [React Docs: Rules of Hooks][rules of hooks]
 
-[destructuring]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
+[destructuring]:
+  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
 [rules of hooks]: https://reactjs.org/docs/hooks-rules.html
-[rules of hooks explanation]: https://reactjs.org/docs/hooks-rules.html#explanation
+[rules of hooks explanation]:
+  https://reactjs.org/docs/hooks-rules.html#explanation
+[react docs beta]: https://beta.reactjs.org/learn/managing-state
