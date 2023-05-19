@@ -316,6 +316,10 @@ harder it will be to keep track of all of the changes in our data. Remember:
 **state is only for values that are expected to change during the component's
 life**.
 
+Before creating any state variables, always think through whether you can derive
+the information you need from a component's props or from existing state
+variables. If the answer is yes, do not create additional state!
+
 ## Conclusion
 
 Whenever we need _dynamic_ data in our applications (values that change over
